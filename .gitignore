@@ -15,4 +15,9 @@ Icon
 .Spotlight-V100
 .Trashes
 
+# NPM
+node_modules
+
+# Project Specific
+docs/*
 

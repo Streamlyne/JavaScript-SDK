@@ -1,26 +1,40 @@
-// Streamlyne JavaScipt SDK
-
+/**
+ Streamlyne JavaScipt SDK
+ @constructor
+*/
 (function( Streamlyne, undefined ) {
-    // Self-referential
+    /**
+     Self-referential
+    */
     var SL = self = Streamlyne;
 
-    //Private Property
+    /**
+    Private Properties
+    */
     var isHot = true;
 
-    //Public Property
+    /**
+    Public Properties
+    */
     self.version = "0.0.1";
 
-    //Public Method
+    /** 
+    Public Methods
+    */
     self.connect = function() {
         return new StreamlyneConnection(arguments);
     };
 
-    //Private Method
+    /**
+    Private Methods
+    */
     var private = function() {
         console.log("Example Private Method");
     };
 
-    // The StreamlyneConnection constructor:
+    /** The StreamlyneConnection constructor:
+    @constructor
+    */
     var StreamlyneConnection = function ( args ) {
         console.log("Creating Steamlyne Connection");
         var self = StreamlyneConnection;
@@ -124,6 +138,10 @@
     StreamlyneNode.prototype = {
         
     };
+
+    // Custom Nodes
+    
+    
 
     // Reveal Streamlyne to the global object.
     // Window is the global object in most situations:
