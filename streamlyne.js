@@ -1,5 +1,15 @@
 /**
- Streamlyne JavaScipt SDK
+ @class Streamlyne JavaScript SDK
+ @name Streamlyne
+ 
+ @tutorial Installation
+ 
+ @example 
+ <script src="streamlyne.js"></script>
+ var sl = Streamlyne.connect({"host":"http://localhost:5000/", "email":"testing@streamlyne.co", "token":"sl-dev"});
+
+ @author Glavin Wiechert
+ @version 0.0.1
  @constructor
 */
 (function( Streamlyne, undefined ) {
@@ -10,32 +20,58 @@
 
     /**
     Private Properties
+
+    @access private
     */
-    var isHot = true;
+    var privateVarExample = true;
 
     /**
     Public Properties
+
+    @access public
     */
     self.version = "0.0.1";
 
     /** 
-    Public Methods
+    Public methods
+    
+    @name Connect
+    
+    @example var sl = Streamlyne.connect( {
+    "host":"http://localhost:5000/", 
+    "email":"testing@streamlyne.co", 
+    "token":"sl-dev"
+    });
+    
+    @public
     */
     self.connect = function() {
-        return new StreamlyneConnection(arguments);
+        return new StreamlyneConnection(arguments[0]);
     };
 
     /**
     Private Methods
+
+    @access private
     */
     var private = function() {
         console.log("Example Private Method");
     };
 
-    /** The StreamlyneConnection constructor:
+    /** 
+    @class The StreamlyneConnection constructor.
+    @name StreamlyneConnection    
+    @example var sl = Streamlyne.connect( {
+    "host":"http://localhost:5000/", 
+    "email":"testing@streamlyne.co", 
+    "token":"sl-dev"
+    });
+    
+    @param {Object} options  The options for intiailizing this StreamlyneConnection. 
+    
     @constructor
     */
-    var StreamlyneConnection = function ( args ) {
+    var StreamlyneConnection = function ( options ) {
         console.log("Creating Steamlyne Connection");
         var self = StreamlyneConnection;
         // Defaults
@@ -125,12 +161,16 @@
         };
 
         // Load options from arguments
-        this.loadOptions(args[0]);
+        this.loadOptions(options);
 
         return this;
     }
     
-    // SLNode
+    /**
+    @class StreamlyneNode
+    @name StreamlyneNode
+    
+    */
     var StreamlyneNode = function() {
         console.log("Creating Streamlyne Node");
         return this;
@@ -139,8 +179,11 @@
         
     };
 
-    // Custom Nodes
+    /**
+    Custom Nodes
     
+    */
+
     
 
     // Reveal Streamlyne to the global object.

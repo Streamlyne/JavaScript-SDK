@@ -1,3 +1,3 @@
-# Installation of Streamlyne JavaScript SDK
-Include the script file `streamlyne.js`.
+# Streamlyne JavaScript SDK
 
+Start with the {@tutorial Installation}.
