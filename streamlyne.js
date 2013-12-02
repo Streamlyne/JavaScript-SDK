@@ -3,7 +3,7 @@
  @name Streamlyne
  
  @tutorial Installation
- 
+
  @example 
  <script src="streamlyne.js"></script>
  var sl = Streamlyne.connect({"host":"http://localhost:5000/", "email":"testing@streamlyne.co", "token":"sl-dev"});
@@ -12,7 +12,7 @@
  @version 0.0.1
  @constructor
 */
-(function( Streamlyne, undefined ) {
+(function( Streamlyne, global, undefined ) {
     /**
      Self-referential
     */
@@ -173,21 +173,40 @@
     */
     var StreamlyneNode = function() {
         console.log("Creating Streamlyne Node");
+        var self = StreamlyneNode;
+
+        self.prototype.readAll = function(callback) {
+            console.log("Read All ", this.type() );
+            callback && callback(null,[]);
+            return this;
+        };
+
         return this;
     };
-    StreamlyneNode.prototype = {
-        
-    };
+    // Reveal Streamlyne to the global object.
+    global.StreamlyneNode = StreamlyneNode;
 
     /**
-    Custom Nodes
-    
+    @class StreamlyneUser
+    @name StreamlyneUser    
     */
-
+    var StreamlyneUser = function() {
+        var self = StreamlyneUser
+        self.prototype = new StreamlyneNode();
+        self.prototype.type = function() {
+            return "user";
+        };
+        self.prototype.customUserClassOnlyFun = function() {
+            console.log("testUserFunction");
+            return this;
+        };
+        return this;
+    };
+    // Reveal Streamlyne to the global object.
+    global.StreamlyneUser = StreamlyneUser;
     
-
     // Reveal Streamlyne to the global object.
     // Window is the global object in most situations:
     return self;
 
-}( window.Streamlyne = window.Streamlyne || {} ));
+}( window.Streamlyne = window.Streamlyne || {}, window ));
