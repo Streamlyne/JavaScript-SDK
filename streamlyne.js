@@ -95,12 +95,13 @@
             if (options.token) {
                 token = options.token;
             }
-            
+
+            /*
             // Test
-            this.apiRequest("GET", "user", null, function(error, result) {
+            this.apiRequest("GET", "user", {"filters": {"fields":true,"rels":true}}, function(error, result) {
                 console.log(error, result);
             });
-            
+            */
             return this;
         };
         self.prototype.apiRequest = function(method, path, data, callback) {
@@ -129,13 +130,19 @@
                 headers["x-sl-email"] = email;
                 headers["x-sl-token"] = token;
             }
+
+            //headers["Access-Control-Request-Method"] = method;
+            //headers["Access-Control-Request-Headers"] = method;
+            headers["Content-Type"] = "application/json";
+            
+            console.log(headers);
             // 
-            var url = host + "api/" + path; 
+            var url = host + "api/" + path + "/" + (method=="GET"?"?p="+JSON.stringify(data):""); 
             var jsonResponse = {};
-            var http = new XMLHttpRequest();
+            var http = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+            console.log(method);
             http.open(method, url, true); //url is the url echoing the jsonString
             // Set headers
-            console.log(headers);
             for (var header in headers) {
                 var value = headers[header];
                 // console.log("header:", header, value);
@@ -143,11 +150,13 @@
             }
             // 
             http.onreadystatechange = function () {
-                console.log("onreadystatechange", this);
+                console.log('onreadystatechange', http.status);
+
                 if (http.readyState == 4 && http.status == 200) {
                     var responseTxt = http.responseText;
-                    console.log(responseTxt);
+                    //console.log(responseTxt);
                     jsonResponse = JSON.parse(responseTxt);
+                    console.log(jsonResponse);
                     // jsonResponse = eval('(' + responseTxt + ')');
                     callback && callback(null, jsonResponse);
                  } else {
@@ -155,7 +164,7 @@
                     callback && callback(error, null);
                  }
             }
-            http.send(null);
+            http.send(JSON.stringify(data));
 
             return this;
         };
@@ -173,34 +182,48 @@
     */
     var StreamlyneNode = function() {
         console.log("Creating Streamlyne Node");
-        var self = StreamlyneNode;
+        var self = this;
+        //console.log(this, self);
 
-        self.prototype.readAll = function(callback) {
+        self.readAll = function(conn, callback) {
             console.log("Read All ", this.type() );
+
+            conn.apiRequest(
+                "GET", 
+                this.type(), 
+                {"filter": {"fields":false,"rels":false}}, 
+                function(error, result) {
+                    console.log(error, result);
+            });
+
             callback && callback(null,[]);
             return this;
         };
 
-        return this;
+        return self;
     };
     // Reveal Streamlyne to the global object.
     global.StreamlyneNode = StreamlyneNode;
-
+    
     /**
     @class StreamlyneUser
     @name StreamlyneUser    
     */
     var StreamlyneUser = function() {
-        var self = StreamlyneUser
-        self.prototype = new StreamlyneNode();
-        self.prototype.type = function() {
+        console.log("Creating User node");
+        var self = this;
+        //console.log(this, self);
+        
+        self = new StreamlyneNode;
+        console.log(self.prototype);
+        self.type = function() {
             return "user";
         };
-        self.prototype.customUserClassOnlyFun = function() {
+        self.customUserClassOnlyFun = function() {
             console.log("testUserFunction");
             return this;
         };
-        return this;
+        return self;
     };
     // Reveal Streamlyne to the global object.
     global.StreamlyneUser = StreamlyneUser;

@@ -5,15 +5,16 @@
 console.log("Starting Tests");
 
 // Example creating connection
-var sl = Streamlyne.connect({"host":"http://localhost:5000/", "email":"testing@streamlyne.co", "token":"sl-dev"});
+var sl = Streamlyne.connect({"host":"http://127.0.0.1:5000/", "email":"testing@streamlyne.co", "token":"sl-dev"});
 console.log(sl);
 
 // User, custom node
 var user = new StreamlyneUser();
 console.log(user);
-user.readAll(function(error, result) {
+user.readAll(sl, function(error, result) {
 	console.log(error, result);
 }); 
+
 
 </script>
 </head>
