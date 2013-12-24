@@ -1,20 +1,27 @@
 <html>
 <head>
+<script src="bower_components/momentjs/min/moment.min.js"></script>
 <script src="streamlyne.js"></script>
 <script>
 console.log("Starting Tests");
 
 // Example creating connection
-var sl = Streamlyne.connect({"host":"http://127.0.0.1:5000/", "email":"testing@streamlyne.co", "token":"sl-dev"});
-console.log(sl);
+var conn = Streamlyne.connect({"host":"http://127.0.0.1:5000/", "email":"testing@streamlyne.co", "token":"sl-dev"});
+console.log(conn);
 
+/*
 // User, custom node
 var user = new StreamlyneUser();
 console.log(user);
-user.readAll(sl, function(error, result) {
+user.readAll(conn, function(error, result) {
 	console.log(error, result);
 }); 
+*/
 
+var workOrder = new StreamlyneWorkOrder();
+workOrder.readAll(conn, function(error, result) {
+    console.log(error, result);
+}); 
 
 </script>
 </head>

@@ -4,12 +4,13 @@
   "description": "JavaScript SDK for Streamlyne's API.",
   "main": "streamlyne.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "echo \"Building Documentation in docs/\" && ./node_modules/.bin/jsdoc -c docs-conf.json && echo \"Open ./docs/index.html for Documentation.\""
+    "test": "echo \"Error: no test specified\" && exit 1"
+    ,"start": "echo \"Building Documentation in docs/\" && ./node_modules/.bin/jsdoc -c docs-conf.json && echo \"Open ./docs/index.html for Documentation.\""
+    ,"poststart": "python -m SimpleHTTPServer"
   },
   "repository": {
     "type": "git",
-    "url": "sl-mgmt:/vol/git/sl-javascript-sdk.git"
+    "url": "http://git.streamlyne.co/streamlyne/sl-javascript-sdk.git"
   },
   "author": "Glavin Wiechert <glavin@streamlyne.co>",
   "dependencies": {

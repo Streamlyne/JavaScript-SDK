@@ -12,7 +12,7 @@
  @version 0.0.1
  @constructor
 */
-(function( Streamlyne, global, undefined ) {
+(function( Streamlyne, global, moment, undefined ) {
     /**
      Self-referential
     */
@@ -24,6 +24,7 @@
     @access private
     */
     var privateVarExample = true;
+    var dateTimeFormat = "YYYY-MM-DDTHH:mm:ss Z";
 
     /**
     Public Properties
@@ -150,9 +151,10 @@
             }
             // 
             http.onreadystatechange = function () {
-                console.log('onreadystatechange', http.status);
-
+                //console.log('onreadystatechange', http.status);
                 if (http.readyState == 4 && http.status == 200) {
+                    console.log("Finished and OK!");
+                    
                     var responseTxt = http.responseText;
                     //console.log(responseTxt);
                     jsonResponse = JSON.parse(responseTxt);
@@ -176,6 +178,75 @@
     }
     
     /**
+    @class StreamlyneRequest
+    @name StreamlyneRequest
+    */
+    var StreamlyneRequest = (function(conn) {
+        if (conn === undefined) {
+            console.log("Requires a StreamlyneConnection.");
+            return { };
+        } else {
+            return {
+                data : {
+                    method : "GET",
+                    path : "",
+                    query : { }
+                },
+                doneCallbacks : [ ],
+                clear : function() {
+                    this.data = { 
+                        method : "GET",
+                        path : "",
+                        query : { }
+                    };
+                    return this;
+                },
+                readAll : function(type) {
+                    this.data.method = "GET";
+                    this.data.path = type;
+                    this.data.query = {
+                        "filter": {
+                            "fields": true,
+                            "rels": true
+                        }
+                    };
+                    return this;
+                },
+                done : function(callback) {
+                    if (callback !== null) {
+                        this.doneCallbacks.push( callback );
+                    }
+                    return this;
+                },
+                run : function(callback) {
+                    // Check for required data
+                    if (this.data &&
+                        this.data.method &&
+                        this.data.path &&
+                        this.data.query ) {
+                        //
+                        this.done(callback);
+                        // Run query
+                        conn.apiRequest(
+                            this.data.method,
+                            this.data.path,
+                            this.data.query,
+                            function(error, result) {
+                                console.log("API Request:", error, result);
+                            }
+                        );
+                    } else {
+                        console.log("Does not meet requirements.", this.data);
+                    }
+                    return this;
+                }
+            };
+        }
+    });
+    // Reveal Streamlyne to the global object.
+    global.StreamlyneRequest = StreamlyneRequest;
+
+    /**
     @class StreamlyneNode
     @name StreamlyneNode
     
@@ -191,7 +262,7 @@
             conn.apiRequest(
                 "GET", 
                 this.type(), 
-                {"filter": {"fields":false,"rels":false}}, 
+                {"filter": {"fields":true,"rels":true}}, 
                 function(error, result) {
                     console.log(error, result);
             });
@@ -210,7 +281,6 @@
     @name StreamlyneUser    
     */
     var StreamlyneUser = function() {
-        console.log("Creating User node");
         var self = this;
         //console.log(this, self);
         
@@ -227,9 +297,31 @@
     };
     // Reveal Streamlyne to the global object.
     global.StreamlyneUser = StreamlyneUser;
+
+    /**
+    @class StreamlyneWorkOrder
+    @name StreamlyneWorkOrder    
+    */
+    var StreamlyneWorkOrder = function() {
+        var self = this;
+        //console.log(this, self);
+        
+        self = new StreamlyneNode;
+        console.log(self.prototype);
+        self.type = function() {
+            return "workOrder";
+        };
+        self.customUserClassOnlyFun = function() {
+            console.log("testUserFunction");
+            return this;
+        };
+        return self;
+    };
+    // Reveal Streamlyne to the global object.
+    global.StreamlyneWorkOrder = StreamlyneWorkOrder;
     
     // Reveal Streamlyne to the global object.
     // Window is the global object in most situations:
     return self;
 
-}( window.Streamlyne = window.Streamlyne || {}, window ));
+}( window.Streamlyne = window.Streamlyne || {}, window, moment ));

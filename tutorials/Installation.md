@@ -3,7 +3,7 @@
 ##### Downloading and Building from Source Code
 Use the following Bash command:
 ```bash
-git clone sl-mgmt:/vol/git/sl-javascript-sdk.git && \
+git clone http://git.streamlyne.co/streamlyne/sl-javascript-sdk.git && \
 cd sl-javascript-sdk/ && \
 npm install && \
 npm start
