@@ -19,7 +19,7 @@ Icon
 node_modules
 
 # Project Specific
-docs/*
+dist/*
 
 # Bower Components
 bower_components/*

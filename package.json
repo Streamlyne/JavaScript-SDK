@@ -6,8 +6,7 @@
   "scripts": {
     "postinstall": "node_modules/bower/bin/bower install"
     ,"test": "echo \"Error: no test specified\" && exit 1"
-    ,"start": "echo \"Building Documentation in docs/\" && ./node_modules/.bin/jsdoc -c docs-conf.json && echo \"Open ./docs/index.html for Documentation.\""
-    ,"poststart": "python -m SimpleHTTPServer"
+    ,"start": "grunt"
   },
   "repository": {
     "type": "git",
@@ -15,7 +14,15 @@
   },
   "author": "Glavin Wiechert <glavin@streamlyne.co>",
   "dependencies": {
-    "bower": "*",
-    "jsdoc": "*"
+    "bower": "*"
+  },
+  "devDependencies": {
+    "grunt-express": "~1.2.1",
+    "grunt-open": "~0.2.2",
+    "grunt-contrib-uglify": "~0.2.4",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-jsdoc": "*",
+    "grunt": "~0.4.2",
+    "matchdep": "~0.3.0"
   }
 }

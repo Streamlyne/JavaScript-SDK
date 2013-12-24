@@ -5,7 +5,7 @@
     "source": {
         "include": [ 
             "README.md",
-            "streamlyne.js"
+            "src/streamlyne.js"
         ],
         "includePattern": ".+\\.js(doc)?$",
         "excludePattern": "(^|\\/|\\\\)_"
@@ -22,7 +22,7 @@
         "monospaceLinks": false
     },
     "opts": {
-        "destination": "./docs/",
+        "destination": "./dist/docs/",
         "recurse": true,
         "tutorials": "./tutorials/"
     }
