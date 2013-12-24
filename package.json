@@ -4,7 +4,8 @@
   "description": "JavaScript SDK for Streamlyne's API.",
   "main": "streamlyne.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall": "node_modules/bower/bin/bower install"
+    ,"test": "echo \"Error: no test specified\" && exit 1"
     ,"start": "echo \"Building Documentation in docs/\" && ./node_modules/.bin/jsdoc -c docs-conf.json && echo \"Open ./docs/index.html for Documentation.\""
     ,"poststart": "python -m SimpleHTTPServer"
   },
@@ -14,6 +15,7 @@
   },
   "author": "Glavin Wiechert <glavin@streamlyne.co>",
   "dependencies": {
+    "bower": "*",
     "jsdoc": "*"
   }
 }

@@ -1,0 +1,26 @@
+{
+  "name": "streamlyne-javascript-sdk",
+  "version": "1.0.0",
+  "authors": [
+    "Glavin Wiechert <Glavin.Wiechert@gmail.com>"
+  ],
+  "description": "This is the Streamlyne JavaScript SDK.",
+  "main": "streamlyne.js",
+  "keywords": [
+    "streamlyne"
+  ],
+  "license": "MIT",
+  "homepage": "http://git.streamlyne.co/streamlyne/sl-javascript-sdk",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "momentjs": "~2.5.0"
+    ,"taffydb": "*"
+  }
+}

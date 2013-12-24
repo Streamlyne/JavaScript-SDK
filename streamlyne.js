@@ -12,7 +12,7 @@
  @version 0.0.1
  @constructor
 */
-(function( Streamlyne, global, moment, undefined ) {
+(function( Streamlyne, global, TAFFY, moment, undefined ) {
     /**
      Self-referential
     */
@@ -44,6 +44,7 @@
     "token":"sl-dev"
     });
     
+    @memberOf Streamlyne
     @public
     */
     self.connect = function() {
@@ -53,6 +54,7 @@
     /**
     Private Methods
 
+    @memberOf Streamlyne
     @access private
     */
     var private = function() {
@@ -82,6 +84,12 @@
         var token = null;
 
         // Add methods
+        /**
+        @name   loadOptions
+        @function   loadOptions
+        @param  options The options.
+        @memberOf   StreamlyneConnection
+        */
         self.prototype.loadOptions = function(options) {
             // Host
             if (options.host) {
@@ -105,6 +113,15 @@
             */
             return this;
         };
+        /**
+        @name apiRequest
+        @function apiRequest
+        @param method   {String} The method.
+        @param path     The method.
+        @param delta    The method.
+        @param callback The method.
+        @memberOf StreamlyneConnection
+        */
         self.prototype.apiRequest = function(method, path, data, callback) {
             console.log("Streamlyne API Request: ", arguments);
 
@@ -138,7 +155,7 @@
             
             console.log(headers);
             // 
-            var url = host + "api/" + path + "/" + (method=="GET"?"?p="+JSON.stringify(data):""); 
+            var url = host + "api/" + path + (method=="GET"?"?p="+JSON.stringify(data):""); 
             var jsonResponse = {};
             var http = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
             console.log(method);
@@ -154,7 +171,7 @@
                 //console.log('onreadystatechange', http.status);
                 if (http.readyState == 4 && http.status == 200) {
                     console.log("Finished and OK!");
-                    
+
                     var responseTxt = http.responseText;
                     //console.log(responseTxt);
                     jsonResponse = JSON.parse(responseTxt);
@@ -162,8 +179,8 @@
                     // jsonResponse = eval('(' + responseTxt + ')');
                     callback && callback(null, jsonResponse);
                  } else {
-                    var error = new Error("Not yet implemented.");
-                    callback && callback(error, null);
+                    //var error = new Error("Not yet implemented.");
+                    //callback && callback(error, null);
                  }
             }
             http.send(JSON.stringify(data));
@@ -182,66 +199,168 @@
     @name StreamlyneRequest
     */
     var StreamlyneRequest = (function(conn) {
-        if (conn === undefined) {
-            console.log("Requires a StreamlyneConnection.");
-            return { };
-        } else {
-            return {
-                data : {
+        this.connection = conn;
+        return {
+            data : {
+                method : "GET",
+                path : "",
+                query : { }
+            },
+            doneCallbacks : [ ],
+            /**
+            Clears all of the request object working data.
+            @memberOf StreamlyneRequest
+            */
+            clear : function() {
+                this.clearQuery();
+                return this;
+            },
+            /**
+            
+            @memberOf StreamlyneRequest
+            */
+            clearQuery : function() {
+                this.data = { 
                     method : "GET",
                     path : "",
                     query : { }
-                },
-                doneCallbacks : [ ],
-                clear : function() {
-                    this.data = { 
-                        method : "GET",
-                        path : "",
-                        query : { }
-                    };
-                    return this;
-                },
-                readAll : function(type) {
-                    this.data.method = "GET";
-                    this.data.path = type;
-                    this.data.query = {
-                        "filter": {
-                            "fields": true,
-                            "rels": true
-                        }
-                    };
-                    return this;
-                },
-                done : function(callback) {
-                    if (callback !== null) {
-                        this.doneCallbacks.push( callback );
+                };
+                return this;
+            },
+            /**
+            
+            @memberOf StreamlyneRequest
+            */
+            connection : function(conn) {
+                this.connection = conn;
+            },
+            /**
+            
+            @memberOf StreamlyneRequest
+            */
+            read : function(path) {
+                this.data.method = "GET";
+                this.data.path = path;
+                /*
+                this.data.query = {
+                    "filter": {
+                        "fields": true,
+                        "rels": true
                     }
-                    return this;
-                },
-                run : function(callback) {
-                    // Check for required data
-                    if (this.data &&
-                        this.data.method &&
-                        this.data.path &&
-                        this.data.query ) {
-                        //
-                        this.done(callback);
-                        // Run query
-                        conn.apiRequest(
-                            this.data.method,
-                            this.data.path,
-                            this.data.query,
-                            function(error, result) {
-                                console.log("API Request:", error, result);
-                            }
-                        );
-                    } else {
-                        console.log("Does not meet requirements.", this.data);
-                    }
-                    return this;
+                };
+                */
+                return this;
+            },
+            /**
+            
+            @memberOf StreamlyneRequest
+            */
+            query : function(newQuery) {
+                this.data.query = newQuery || this.data.query || { };
+                return this;
+            },
+            /**
+            
+            @memberOf StreamlyneRequest
+            */
+            filter : function(newFilter) {
+                this.data.query = this.data.query || { };
+                this.data.query.filter = newFilter || this.data.query.filter || { } ;
+                return this;
+            },
+            /**
+            
+            @memberOf StreamlyneRequest
+            */
+            filterFields : function(newFields) {
+                this.data.query = this.data.query || { };
+                this.data.query.filter = this.data.query.filter || { };
+                this.data.query.filter.fields = newFields || this.data.query.filter.fields || true;                
+                return this;
+            },
+            /**
+            
+            @memberOf StreamlyneRequest
+            */
+            filterRelationships : function(newRels) {
+                this.data.query = this.data.query || { };
+                this.data.query.filter = this.data.query.filter || { };
+                this.data.query.filter.rels = newRels || this.data.query.filter.rels || true;
+                return this;
+            },
+            /**
+            
+            @memberOf StreamlyneRequest
+            */
+            limit : function(pageCount) {
+                this.data.query = this.data.query || { };
+                this.data.query.page = this.data.query.page || { };
+                this.data.query.page.count = pageCount || this.data.query.page.count || 0;
+                return this;
+            },
+            /**
+            
+            @memberOf StreamlyneRequest
+            */
+            getPageWithId : function(pageId) {
+                this.data.query = this.data.query || { };
+                this.data.query.page = this.data.query.page || { };
+                this.data.query.page.id = pageId || this.data.query.page.id || 0;
+                return this;
+            },
+            /**
+            
+            @memberOf StreamlyneRequest
+            */
+            done : function(callback) {
+                console.log(this.doneCallbacks);
+                if (callback !== null) {
+                    this.doneCallbacks.push( callback );
                 }
-            };
-        }
+                return this;
+            },
+            /**
+            
+            @memberOf StreamlyneRequest
+            */
+            run : function(callback) {
+                // Check for required data
+                if (connection === undefined) {
+                    console.log("Requires a StreamlyneConnection.");
+                    return { };
+                } else 
+                if (this.data &&
+                    this.data.method &&
+                    this.data.path &&
+                    this.data.query ) {
+                    //
+                    this.done(callback);
+                    // Run query
+                    var self = this;
+                    connection.apiRequest(
+                        this.data.method,
+                        this.data.path,
+                        this.data.query,
+                        function(error, result) {
+                            console.log("API Request:", error, result);
+                            console.log(self.doneCallbacks);
+                            // Process callbacks
+                            if (self.doneCallbacks) {
+                                self.doneCallbacks.reverse();
+                                for (var i=0, len=self.doneCallbacks.length; i<len; i++) {
+                                    var curr = self.doneCallbacks.pop();
+                                    curr(error, result);
+                                }
+                            }
+                            self.doneCallbacks = [ ];
+                        }
+                    );
+                } else {
+                    console.log("Does not meet requirements.", this.data);
+                }
+                return this;
+            }
+        };
     });
     // Reveal Streamlyne to the global object.
     global.StreamlyneRequest = StreamlyneRequest;
@@ -256,9 +375,22 @@
         var self = this;
         //console.log(this, self);
 
-        self.readAll = function(conn, callback) {
-            console.log("Read All ", this.type() );
+        /**
+        @memberOf StreamlyneNode
+        */
+        self.data = { };
+        /**
+        @memberOf StreamlyneNode
+        */
+        self.relationships = { };
 
+        /**
+        Read All.
+        @memberOf StreamlyneNode
+        */
+        self.readAll = function(conn, callback) {
+            /*
+            console.log("Read All ", this.type() );
             conn.apiRequest(
                 "GET", 
                 this.type(), 
@@ -266,9 +398,74 @@
                 function(error, result) {
                     console.log(error, result);
             });
-
             callback && callback(null,[]);
+            */
+            StreamlyneRequest(conn).read(this.type() + "/")
+            .filterFields(true)
+            .filterRelationships(true)
+            .run(function(error, result) {
+                console.log("Request Complete: ", error, result);
+                // Parse nodes
+                var nodes = result.nodes;
+                console.log(nodes);
+                for (var n=0, len=nodes.length; n<len; n++) {
+                    var node = nodes[n];
+                    console.log(node);
+                }
+                // Return nodes
+                callback && callback(null, result);
+            });
             return this;
+        };
+
+        /**
+        Read node with ID.
+        @memberOf StreamlyneNode
+        */
+        self.readWithId = function(conn, nodeId, callback) {
+            /*
+            console.log("Read All ", this.type() );
+            conn.apiRequest(
+                "GET", 
+                this.type(), 
+                {"filter": {"fields":true,"rels":true}}, 
+                function(error, result) {
+                    console.log(error, result);
+            });
+            callback && callback(null,[]);
+            */
+            StreamlyneRequest(conn).read(this.type()+"/"+nodeId)
+            .filterFields(true)
+            .filterRelationships(true)
+            .run(function(error, result) {
+                console.log("Request Complete: ", error, result);
+                // Parse nodes
+                var node = result;
+                console.log(node);
+                // Return nodes
+                callback && callback(null, result);
+            });
+            return this;
+        };
+        /**
+        Read node with ID.
+        @memberOf StreamlyneNode
+        */
+        self.readById = self.readWithId;
+
+        /**
+        Get Database
+        @memberOf StreamlyneNode
+        */
+        var db = { };
+        self.db = function() {
+            // Check if exists
+            var d = db[this.type()];
+            if (d === undefined) {
+                d = TAFFY();
+                db[this.type()] = d;
+            }
+            return d;
         };
 
         return self;
@@ -279,6 +476,7 @@
     /**
     @class StreamlyneUser
     @name StreamlyneUser    
+    @inherits StreamlyneNode
     */
     var StreamlyneUser = function() {
         var self = this;
@@ -286,9 +484,15 @@
         
         self = new StreamlyneNode;
         console.log(self.prototype);
+        /**
+        @memberOf StreamlyneUser
+        */
         self.type = function() {
             return "user";
         };
+        /**
+        @memberOf StreamlyneUser
+        */
         self.customUserClassOnlyFun = function() {
             console.log("testUserFunction");
             return this;
@@ -300,7 +504,8 @@
 
     /**
     @class StreamlyneWorkOrder
-    @name StreamlyneWorkOrder    
+    @name StreamlyneWorkOrder 
+    @inherits StreamlyneNode   
     */
     var StreamlyneWorkOrder = function() {
         var self = this;
@@ -308,9 +513,15 @@
         
         self = new StreamlyneNode;
         console.log(self.prototype);
+        /**
+        @memberOf StreamlyneWorkOrder
+        */
         self.type = function() {
             return "workOrder";
         };
+        /**
+        @memberOf StreamlyneWorkOrder
+        */
         self.customUserClassOnlyFun = function() {
             console.log("testUserFunction");
             return this;
@@ -324,4 +535,4 @@
     // Window is the global object in most situations:
     return self;
 
-}( window.Streamlyne = window.Streamlyne || {}, window, moment ));
+}( window.Streamlyne = window.Streamlyne || {}, window, TAFFY, moment ));
