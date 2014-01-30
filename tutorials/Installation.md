@@ -2,7 +2,7 @@
 
 ##### Downloading and Building from Source Code
 
-Use the following Bash command:
+Use the following [Bash] command:
 
 ```bash
 git clone http://git.streamlyne.co/streamlyne/sl-javascript-sdk.git && \
@@ -18,9 +18,9 @@ npm start
 
 Install using [Bower](http://bower.io/).
 
-```bash
+```
 bower install http://git.streamlyne.co/streamlyne/sl-javascript-sdk.git --save
 ```
 
-Then include the file `/bower_components/streamlyne-javascript-sdk/src/streamlyne.js` as the `src` of a `script` tag.
+Then include the file `/bower_components/streamlyne-javascript-sdk/dist/streamlyne.min.js` as the `src` of a `script` tag.
 

@@ -43,11 +43,12 @@ module.exports = function(grunt) {
                 src: [
                     "src/*.js"
                     , "README.md"
-                ],
-                options: {
+                ]
+                , options: {
                     destination: 'dist/docs/'
                     , recurse: true
                     , tutorials: 'tutorials'
+                    , configure: "./docs-conf.json"
                 }
             }
         },
@@ -62,8 +63,7 @@ module.exports = function(grunt) {
                     'src/*.js'
                 ],
                 tasks: [
-                    'uglify:compile',
-                    'jsdoc:dist'
+                    'uglify:compile'
                 ]
             },
 
@@ -73,12 +73,14 @@ module.exports = function(grunt) {
                     nospawn: true
                 },
                 files: [
-                    'src/*.js'
-                    ,'tests/test.html'
-                    ,'tutorials/*'
+                    'README.md'
+                    , 'src/*.js'
+                    , 'tests/*.html'
+                    , 'tutorials/*.md'
                     
                 ], 
                 tasks: [
+                    'jsdoc:dist',
                     'express'
                 ]
             }

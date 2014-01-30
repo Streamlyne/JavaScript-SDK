@@ -19,7 +19,6 @@ Icon
 node_modules
 
 # Project Specific
-dist/*
 
 # Bower Components
 bower_components/*
