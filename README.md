@@ -2,7 +2,7 @@
 
 Start with the {@tutorial Installation}.
 
-See [test.html](/test.html) for example usage.
+See [test.html](/test.html?noglobals=true&notrycatch=true) for example usage.
 
 -----
 

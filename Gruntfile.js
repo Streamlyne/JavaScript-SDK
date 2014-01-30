@@ -33,6 +33,7 @@ module.exports = function(grunt) {
             compile: {
                 files: {
                     'dist/streamlyne.min.js': [ 'src/streamlyne.js' ]
+                    , 'dist/streamlyne.tests.min.js': [ 'src/streamlyne.tests.js' ]
                 }
             }
         },

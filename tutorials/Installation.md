@@ -2,7 +2,7 @@
 
 ##### Downloading and Building from Source Code
 
-Use the following [Bash] command:
+Use the following Bash command:
 
 ```bash
 git clone http://git.streamlyne.co/streamlyne/sl-javascript-sdk.git && \
@@ -12,7 +12,7 @@ npm start
 ```
 
 ###### Note:
-*npm start* builds the documentation in `./docs/`.
+`npm start` runs `grunt` which builds the documentation in `docs/` and the production-ready script into the destination directory `dist/`.
 
 #### To Use the Streamlyne JavaScript SDK in another Website
 

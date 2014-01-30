@@ -166,22 +166,36 @@
                 // console.log("header:", header, value);
                 http.setRequestHeader(header, value);
             }
+            //
+            var isSuccessful = function(readyState, statusCode) {
+              return ( readyState == 4 && (parseInt( statusCode / 100 ) == 2) );
+            };
             // 
             http.onreadystatechange = function () {
-                //console.log('onreadystatechange', http.status);
-                if (http.readyState == 4 && http.status == 200) {
-                    console.log("Finished and OK!");
-
-                    var responseTxt = http.responseText;
-                    //console.log(responseTxt);
+              console.log('onreadystatechange', http.readyState, http.status);
+              if ( isSuccessful(http.readyState, http.status) ) {
+                console.log("Finished and OK!");
+                var responseTxt = http.responseText;
+                //console.log(responseTxt);
+                jsonResponse = JSON.parse(responseTxt);
+                console.log(jsonResponse);
+                // jsonResponse = eval('(' + responseTxt + ')');
+                return callback && callback(null, jsonResponse);
+              } else {
+                console.log(http.readyState)
+                if (http.readyState == 4)
+                {
+                  console.log('Error!', http.status, http.responseText);
+                  var responseTxt = http.responseText;
+                  try {
                     jsonResponse = JSON.parse(responseTxt);
-                    console.log(jsonResponse);
-                    // jsonResponse = eval('(' + responseTxt + ')');
-                    callback && callback(null, jsonResponse);
-                 } else {
-                    //var error = new Error("Not yet implemented.");
-                    //callback && callback(error, null);
-                 }
+                    return callback && callback(error, jsonResponse);
+                  } catch (e) {
+                    var error = new Error(responseTxt);
+                    return callback && callback(error, { });
+                  }
+                }
+              }
             }
             http.send(JSON.stringify(data));
 
@@ -240,6 +254,23 @@
             */
             read : function(path) {
                 this.data.method = "GET";
+                this.data.path = path;
+                /*
+                this.data.query = {
+                    "filter": {
+                        "fields": true,
+                        "rels": true
+                    }
+                };
+                */
+                return this;
+            },
+            /**
+            
+            @memberOf StreamlyneRequest
+            */
+            create : function(path) {
+                this.data.method = "POST";
                 this.data.path = path;
                 /*
                 this.data.query = {
@@ -342,7 +373,7 @@
                         this.data.path,
                         this.data.query,
                         function(error, result) {
-                            console.log("API Request:", error, result);
+                            console.log(self.data.method + " API Request:", error, result);
                             console.log(self.doneCallbacks);
                             // Process callbacks
                             if (self.doneCallbacks) {
@@ -443,7 +474,7 @@
                 var node = result;
                 console.log(node);
                 // Return nodes
-                callback && callback(null, result);
+                return callback && callback(null, result);
             });
             return this;
         };
@@ -452,6 +483,28 @@
         @memberOf StreamlyneNode
         */
         self.readById = self.readWithId;
+
+        /**
+        Create node with `data` and `relationshps`.
+        @memberOf StreamlyneNode
+        @return StreamlyneNode Self-Referential.
+        */
+        self.create = function(conn, options, callback) {
+          options = options || { };
+
+          StreamlyneRequest(conn)
+          .create(this.type())
+          .query({
+            "data": options.data || { },
+            "rels": options.relationships || [ ]
+          })
+          .run(function(error, result){
+            console.log("Request Complete: ", error, result);
+            return callback && callback(error, result);
+          });
+          return this;
+        };
+
 
         /**
         Get Database
@@ -492,15 +545,18 @@
         };
         /**
         @memberOf StreamlyneUser
+        @return StreamlyneUser Self-Referential.
         */
         self.customUserClassOnlyFun = function() {
             console.log("testUserFunction");
             return this;
         };
+
         return self;
     };
     // Reveal Streamlyne to the global object.
     global.StreamlyneUser = StreamlyneUser;
+    Streamlyne.user = StreamlyneUser();
 
     /**
     @class StreamlyneWorkOrder
@@ -530,7 +586,193 @@
     };
     // Reveal Streamlyne to the global object.
     global.StreamlyneWorkOrder = StreamlyneWorkOrder;
-    
+    Streamlyne.workOrder = StreamlyneWorkOrder();
+
+    /**
+    @class StreamlyneAsset
+    @name StreamlyneAsset    
+    @inherits StreamlyneNode
+    */
+    var StreamlyneAsset = function() {
+        var self = this;
+        
+        self = new StreamlyneNode;
+        /**
+        @memberOf StreamlyneAsset
+        */
+        self.type = function() {
+            return "user";
+        };
+        /**
+        @memberOf StreamlyneAsset
+        @return StreamlyneAsset Self-Referential.
+        */
+        self.customUserClassOnlyFun = function() {
+            console.log("testUserFunction");
+            return this;
+        };
+
+        return self;
+    };
+    // Reveal Streamlyne to the global object.
+    global.StreamlyneAsset = StreamlyneAsset;
+    Streamlyne.asset = StreamlyneAsset();
+
+    /**
+    @class StreamlyneGroup
+    @name StreamlyneGroup    
+    @inherits StreamlyneNode
+    */
+    var StreamlyneGroup = function() {
+        var self = this;
+        
+        self = new StreamlyneNode;
+        /**
+        @memberOf StreamlyneGroup
+        */
+        self.type = function() {
+            return "user";
+        };
+        /**
+        @memberOf StreamlyneGroup
+        @return StreamlyneGroup Self-Referential.
+        */
+        self.customUserClassOnlyFun = function() {
+            console.log("testUserFunction");
+            return this;
+        };
+
+        return self;
+    };
+    // Reveal Streamlyne to the global object.
+    global.StreamlyneGroup = StreamlyneGroup;
+    Streamlyne.group = StreamlyneGroup();
+
+
+    /**
+    @class StreamlyneLog
+    @name StreamlyneLog    
+    @inherits StreamlyneNode
+    */
+    var StreamlyneLog = function() {
+        var self = this;
+        
+        self = new StreamlyneNode;
+        /**
+        @memberOf StreamlyneLog
+        */
+        self.type = function() {
+            return "user";
+        };
+        /**
+        @memberOf StreamlyneLog
+        @return StreamlyneLog Self-Referential.
+        */
+        self.customUserClassOnlyFun = function() {
+            console.log("testUserFunction");
+            return this;
+        };
+
+        return self;
+    };
+    // Reveal Streamlyne to the global object.
+    global.StreamlyneLog = StreamlyneLog;
+    Streamlyne.log = StreamlyneLog();
+
+    /**
+    @class StreamlyneAttribute
+    @name StreamlyneAttribute    
+    @inherits StreamlyneNode
+    */
+    var StreamlyneAttribute = function() {
+        var self = this;
+        
+        self = new StreamlyneNode;
+        /**
+        @memberOf StreamlyneAttribute
+        */
+        self.type = function() {
+            return "user";
+        };
+        /**
+        @memberOf StreamlyneAttribute
+        @return StreamlyneAttribute Self-Referential.
+        */
+        self.customUserClassOnlyFun = function() {
+            console.log("testUserFunction");
+            return this;
+        };
+
+        return self;
+    };
+    // Reveal Streamlyne to the global object.
+    global.StreamlyneAttribute = StreamlyneAttribute;
+    Streamlyne.attribute = StreamlyneAttribute();
+
+
+
+    /**
+    @class StreamlyneOrganization
+    @name StreamlyneOrganization    
+    @inherits StreamlyneNode
+    */
+    var StreamlyneOrganization = function() {
+        var self = this;
+        
+        self = new StreamlyneNode;
+        /**
+        @memberOf StreamlyneOrganization
+        */
+        self.type = function() {
+            return "user";
+        };
+        /**
+        @memberOf StreamlyneOrganization
+        @return StreamlyneOrganization Self-Referential.
+        */
+        self.customUserClassOnlyFun = function() {
+            console.log("testUserFunction");
+            return this;
+        };
+
+        return self;
+    };
+    // Reveal Streamlyne to the global object.
+    global.StreamlyneOrganization = StreamlyneOrganization;
+    Streamlyne.organization = StreamlyneOrganization();
+
+    /**
+    @class StreamlyneSite
+    @name StreamlyneSite    
+    @inherits StreamlyneNode
+    */
+    var StreamlyneSite = function() {
+        var self = this;
+        
+        self = new StreamlyneNode;
+        /**
+        @memberOf StreamlyneSite
+        */
+        self.type = function() {
+            return "user";
+        };
+        /**
+        @memberOf StreamlyneSite
+        @return StreamlyneSite Self-Referential.
+        */
+        self.customUserClassOnlyFun = function() {
+            console.log("testUserFunction");
+            return this;
+        };
+
+        return self;
+    };
+    // Reveal Streamlyne to the global object.
+    global.StreamlyneSite = StreamlyneSite;
+    Streamlyne.site = StreamlyneSite();
+
+
+
     // Reveal Streamlyne to the global object.
     // Window is the global object in most situations:
     return self;

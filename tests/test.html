@@ -1,43 +1,27 @@
 <html>
-<head>
-<script src="momentjs/min/moment.min.js"></script>
-<script src="taffydb/taffy-min.js"></script>
-<script src="streamlyne.min.js"></script>
-<script>
-console.log("Starting Tests");
+    <head>
+        <title>Streamlyne JS SDK Tests</title>
 
-// Example creating connection
-var conn = Streamlyne.connect({"host":"http://127.0.0.1:5000/", "email":"testing@streamlyne.co", "token":"sl-dev"});
-console.log(conn);
+        <!-- Styles -->
+        <link rel="stylesheet" href="qunit/qunit/qunit.css">
 
-/*
-// User, custom node
-var user = new StreamlyneUser();
-console.log(user);
-user.readAll(conn, function(error, result) {
-	console.log(error, result);
-}); 
-*/
+    </head>
 
-var workOrder = new StreamlyneWorkOrder();
-workOrder.readAll(conn, function(error, result) {
-    console.log(error, result);
-}); 
+    <body>
 
-/*
-var request = StreamlyneRequest(conn);
-request.readAll("workOrder").run(function(error, result) {
-    console.log(error, result);
-});
+        <a href="https://developers.google.com/chrome-developer-tools/docs/console#opening_the_console" target="_blank">How to open JS Console in Chrome</a>
 
-StreamlyneRequest(conn).readAll("workOrder").limit(10).run(function(error, result) {
-    console.log(error, result);
-});
-*/
+        <hr/>
 
-</script>
-</head>
-<body>
-<h1>Open the JavaScript console</h1>
-</body>
+        <div id="qunit"></div>
+        <div id="qunit-fixture"></div>
+
+        <!-- Scripts -->
+        <script src="momentjs/min/moment.min.js"></script>
+        <script src="taffydb/taffy-min.js"></script>
+        <script src="streamlyne.min.js"></script>
+        <script type="text/javascript" src="qunit/qunit/qunit.js"></script>
+        <script type="text/javascript" src="streamlyne.tests.min.js"></script>
+
+    </body>
 </html>
