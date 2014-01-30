@@ -17,7 +17,7 @@ module.exports = function(grunt) {
                 options: {
                     port: 8123, 
                     hostname: '0.0.0.0',
-                    bases: [ "dist", "tests", "bower_components" ],
+                    bases: [ "dist", "tests", "bower_components", "src" ],
                     livereload: true
                 }
             }
@@ -30,6 +30,12 @@ module.exports = function(grunt) {
 
         // Compile 
         uglify : {
+            options: {
+                compress: {
+                    drop_console: true
+                },
+                report: 'gzip'
+            },
             compile: {
                 files: {
                     'dist/streamlyne.min.js': [ 'src/streamlyne.js' ]
@@ -42,7 +48,7 @@ module.exports = function(grunt) {
         jsdoc: {
             dist: {
                 src: [
-                    "src/*.js"
+                    "src/streamlyne.js"
                     , "README.md"
                 ]
                 , options: {
