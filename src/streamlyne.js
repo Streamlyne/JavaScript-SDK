@@ -172,9 +172,6 @@
             console.log(headers);
             // 
             var url = host + 'api/' + path + (method === 'GET' ? '?p=' + JSON.stringify(data) : '');
-            var jsonResponse =
-            {
-            };
             var http = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
             console.log(method, url);
             http.open(method, url, true); //url is the url echoing the jsonString
@@ -194,33 +191,51 @@
             http.onreadystatechange = function ()
             {
                 //console.log('onreadystatechange', http.readyState, http.status);
+                
+                // Attempt to parse responseText
+                var jsonResponse = null;
+                var error = null;
                 var responseTxt = http.responseText;
+                try
+                {
+                    // Check if responseText is falsy   
+                    if (!responseTxt) 
+                    {
+                        // Empty string
+                        jsonResponse = {};
+                    } 
+                    else 
+                    {
+                        // Try and parse
+                        jsonResponse = JSON.parse(responseTxt);
+                    }
+                }
+                catch (e)
+                {
+                    // Could not parse to JSON
+                    jsonResponse = {};
+                    // 
+                    error = new Error('Could not parse into JSON: '+responseTxt);
+                }
+
+                // Check if request is successful
                 if (isSuccessful(http.readyState, http.status))
                 {
-                    //console.log("Finished and OK!");
-                    //console.log(responseTxt);
-                    jsonResponse = JSON.parse(responseTxt);
-                    //console.log(jsonResponse);
-                    // jsonResponse = eval('(' + responseTxt + ')');
-                    return callback && callback(null, jsonResponse);
+                    // Completed & Successful: should not have an error.
+                    error = null;
+                    // Return
+                    return callback && callback(error, jsonResponse);
                 }
                 else
                 {
-                    //console.log(http.readyState)
+                    // Not Completed or Unsuccessful
+                    // Check if Completed
                     if (http.readyState === 4)
                     {
-                        //console.log('Error!', http.status, http.responseText);
-                        try
-                        {
-                            jsonResponse = JSON.parse(responseTxt);
-                            return callback && callback(error, jsonResponse);
-                        }
-                        catch (e)
-                        {
-                            var error = new Error(responseTxt);
-                            return callback && callback(error, {
-                            });
-                        }
+                        // Must be unsuccessful / error occured.
+                        error = new Error(responseTxt);
+                        // Return
+                        return callback && callback(error, jsonResponse);
                     }
                 }
             };
@@ -333,7 +348,7 @@
         {
             this.data.method = 'GET';
             this.data.path = path;
-/*
+        /*
           this.data.query = {
               "filter": {
                   "fields": true,
@@ -351,7 +366,7 @@
         {
             this.data.method = 'POST';
             this.data.path = path;
-/*
+        /*
           this.data.query = {
               "filter": {
                   "fields": true,
@@ -361,6 +376,25 @@
           */
             return this;
         };
+        /**
+         
+         @memberOf StreamlyneRequest
+         */
+        self.delete = function (path)
+        {
+            this.data.method = 'DELETE';
+            this.data.path = path;
+        /*
+          this.data.query = {
+              "filter": {
+                  "fields": true,
+                  "rels": true
+              }
+          };
+          */
+            return this;
+        };
+
         /**
          
          @memberOf StreamlyneRequest
@@ -473,7 +507,7 @@
                 this.connection.apiRequest(
                 this.data.method, this.data.path, this.data.query, function (error, result)
                 {
-                    //console.log(self.data.method + " API Request:", error, result);
+                    console.log(self.data.method + ' API Request:', error, result);
                     //console.log(self.doneCallbacks);
                     // Process callbacks
                     if (self.doneCallbacks)
@@ -482,7 +516,10 @@
                         for (var i = 0, len = self.doneCallbacks.length; i < len; i++)
                         {
                             var curr = self.doneCallbacks.pop();
-                            curr(error, result);
+                            if (typeof curr === 'function')
+                            {
+                                curr(error, result);
+                            }
                         }
                     }
                     self.doneCallbacks = [];
@@ -529,10 +566,11 @@
         /**
          Read All.
          @memberOf StreamlyneNode
+         @return StreamlyneNode Self-Referential.
          */
         self.readAll = function (conn, callback)
         {
-/*
+            /*
             console.log("Read All ", this.type() );
             conn.apiRequest(
                 "GET", 
@@ -543,9 +581,13 @@
             });
             callback && callback(null,[]);
             */
-            new StreamlyneRequest(conn).read(this.type() + '/').filterFields(true).filterRelationships(true).run(function (error, result)
+            new StreamlyneRequest(conn)
+            .read(this.type() + '/')
+            .filterFields(true)
+            .filterRelationships(true)
+            .run(function (error, result)
             {
-                //console.log("Request Complete: ", error, result);
+                console.log('Request Complete: ', error, result);
                 try
                 {
                     // TODO: Wrap the JSON nodes in their respective StreamlyneNode objects.
@@ -559,7 +601,7 @@
                     }
                     */
                     // Return nodes
-                    return callback && callback(null, result);
+                    return callback && callback(error, result);
                 }
                 catch (e)
                 {
@@ -572,10 +614,19 @@
         /**
          Read node with ID.
          @memberOf StreamlyneNode
+         @return StreamlyneNode Self-Referential.
          */
         self.readWithId = function (conn, nodeId, callback)
         {
-/*
+            console.log('readWithId', nodeId);
+            // Validate input
+            if (!nodeId)
+            {
+                var error = new Error('NodeId argument not defined in readWithId request.');
+                callback && callback(error, {});
+                return this;
+            }
+            /*
             console.log("Read All ", this.type() );
             conn.apiRequest(
                 "GET", 
@@ -586,7 +637,11 @@
             });
             callback && callback(null,[]);
             */
-            new StreamlyneRequest(conn).read(this.type() + '/' + nodeId).filterFields(true).filterRelationships(true).run(function (error, result)
+            new StreamlyneRequest(conn)
+            .read(this.type() + '/' + nodeId)
+            .filterFields(true)
+            .filterRelationships(true)
+            .run(function (error, result)
             {
                 //console.log("Request Complete: ", error, result);
     
@@ -597,13 +652,14 @@
                 console.log(node);
                 */
                 // Return nodes
-                return callback && callback(null, result);
+                return callback && callback(error, result);
             });
             return this;
         };
         /**
          Read node with ID.
          @memberOf StreamlyneNode
+         @return StreamlyneNode Self-Referential.
          */
         self.readById = self.readWithId;
 
@@ -630,6 +686,51 @@
             return this;
         };
 
+        /**
+         Delete node with ID.
+         @memberOf StreamlyneNode
+         @return StreamlyneNode Self-Referential.
+         */
+        self.deleteWithId = function (conn, nodeId, callback)
+        {
+            console.log('deleteWithId', nodeId);
+            // Validate input
+            if (!nodeId)
+            {
+                var error = new Error('NodeId argument not defined in readWithId request.');
+                callback && callback(error, {});
+                return this;
+            }
+
+            new StreamlyneRequest(conn)
+            .delete(this.type() + '/' + nodeId)
+            .filterFields(true)
+            .filterRelationships(true)
+            .run(function (error, result)
+            {
+                //console.log("Request Complete: ", error, result);
+                return callback && callback(error, result);
+            });
+            return this;
+        };
+        /**
+         Delete node with ID.
+         @memberOf StreamlyneNode
+         @return StreamlyneNode Self-Referential.
+         */
+        self.deleteById = self.deleteWithId;
+
+        /**
+        Check if the data of `this` and another Node are the same.
+        @param otherNode
+        @memberOf StreamlyneNode
+        @return Boolean Is the data of `this` node the same as the `otherNode` passed in. 
+        */
+        self.equalTo = function(otherNode)
+        {
+            // TODO
+            return this === otherNode;
+        };
 
         /**
          Get Database
@@ -734,7 +835,7 @@
          */
         self.type = function ()
         {
-            return 'user';
+            return 'asset';
         };
         /**
          @memberOf StreamlyneAsset
@@ -767,7 +868,7 @@
          */
         self.type = function ()
         {
-            return 'user';
+            return 'group';
         };
         /**
          @memberOf StreamlyneGroup
@@ -801,7 +902,7 @@
          */
         self.type = function ()
         {
-            return 'user';
+            return 'log';
         };
         /**
          @memberOf StreamlyneLog
@@ -834,7 +935,7 @@
          */
         self.type = function ()
         {
-            return 'user';
+            return 'attribute';
         };
         /**
          @memberOf StreamlyneAttribute
@@ -869,7 +970,7 @@
          */
         self.type = function ()
         {
-            return 'user';
+            return 'organization';
         };
         /**
          @memberOf StreamlyneOrganization
@@ -902,7 +1003,7 @@
          */
         self.type = function ()
         {
-            return 'user';
+            return 'site';
         };
         /**
          @memberOf StreamlyneSite
