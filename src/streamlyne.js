@@ -199,12 +199,12 @@
                 try
                 {
                     // Check if responseText is falsy   
-                    if (!responseTxt) 
+                    if (!responseTxt)
                     {
                         // Empty string
                         jsonResponse = {};
-                    } 
-                    else 
+                    }
+                    else
                     {
                         // Try and parse
                         jsonResponse = JSON.parse(responseTxt);
@@ -719,6 +719,48 @@
          @return StreamlyneNode Self-Referential.
          */
         self.deleteById = self.deleteWithId;
+
+        /**
+        Add a relationship between two nodes.
+        @memberOf StreamlyneNode
+        @return StreamlyneNode Self-Referential.
+        */
+        self.addRelationshipBetweenIds = function(conn, startId, endId, relsType, callback)
+        {
+            console.log('addRelationshipBetweenIds', startId);
+            //
+            relsType = relsType || 'relationship';
+            // Validate input
+            if (!startId || !endId)
+            {
+                var error = new Error('StartId or EndId argument is not defined in addRelationshipBetweenIds request.');
+                callback && callback(error, {});
+                return this;
+            }
+
+            new StreamlyneRequest(conn)
+            .create(this.type() + '/' + startId)
+            .query({
+                'data': { }, // No change to data
+                'rels': {
+                    'add': [
+                        // Add single Relationship
+                        {
+                            'dir': 'in',
+                            'id': endId,
+                            'nodeType': '', // This can be empty, and server will fill it in
+                            'relsType': relsType
+                        }
+                    ]
+                }
+            })
+            .run(function (error, result)
+            {
+                //console.log("Request Complete: ", error, result);
+                return callback && callback(error, result);
+            });
+            return this;
+        };
 
         /**
         Check if the data of `this` and another Node are the same.

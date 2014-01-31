@@ -606,6 +606,122 @@ asyncTest( "Delete with Id", function() {
   }); 
 });
 
+
+/**
+Work Orders
+--------------------------------------------------------------------------
+*/
+module("Steamlyne - Relationships", {
+});
+asyncTest( "Add Relationship", function() {
+  expect( 6 );
+
+  console.log('Test - Add Relationship');
+  console.log('Creating Log');
+
+  Streamlyne.log.create(authConn, {
+    "data": {
+      "name": "Unit Test Log Sheet",
+      "description": "This is an example log sheet."
+    }
+  }, function(error, result) {
+    //console.log("Created User",error, result);
+    if (!error)
+    {
+        node.id = result.id;
+
+        ok( true, "Passed. Created Log "+node.id+"." );
+
+        Streamlyne.attribute.create(authConn, {
+            "data": {
+              "name": "Pressure",
+              "description": "This is the Asset's pressure attribute.",
+              "data_type": "kPa"
+            }
+        }, function(error, result) {
+            //console.log("Created User",error, result);
+            if (!error)
+            {
+                var attr = {};
+                attr.id = result.id;
+                //
+                var relsType = "relationship";
+
+                ok( true, "Passed. Created Attribute "+attr.id+"." );
+
+                Streamlyne.log.addRelationshipBetweenIds(authConn, node.id, attr.id, relsType, function(error, result){
+    
+                    if (!error)
+                    {
+                        ok( true, "Passed. Added relationship." );
+
+                        Streamlyne.log.readWithId(authConn, node.id, function(error, result) {
+
+                            console.log('Read after add relationship', error, result);
+
+                            if (!error && result.id === node.id)
+                            {
+                                ok( true, "Passed and ready to resume!" );
+
+                                // Clean up
+                                Streamlyne.log.deleteWithId(authConn, node.id, function(error, result) {
+                                    //console.log("Delete Work Order with Id", node.id, error, result);
+                                    if (!error)
+                                    {
+                                        ok( true, "Passed cleanup. Deleted log "+node.id+"." );
+
+                                        // Clean up
+                                        Streamlyne.attribute.deleteWithId(authConn, attr.id, function(error, result) {
+                                            //console.log("Delete Work Order with Id", node.id, error, result);
+                                            if (!error)
+                                            {
+                                              ok( true, "Passed cleanup. Deleted attribute "+attr.id+"." );
+                                            }
+                                            else
+                                            {
+                                              ok( false, error.message);
+                                            }
+                                            start();
+                                        }); 
+
+                                    }
+                                    else
+                                    {
+                                      ok( false, error.message);
+                                    start();
+                                    }
+                                }); 
+
+                            }
+                            else
+                            {
+                                ok( false, error.message);
+                                start();
+                            }
+                        }); 
+
+                    }
+                    else
+                    {
+                        ok( false, error.message);
+                        start();
+                    }
+
+                });
+
+            }
+        });
+    }
+    else
+    {
+      ok( false, error.message);
+    start();
+    }
+  }); 
+
+});
+
+
 // ----------------------------------------------------
 
 /*
