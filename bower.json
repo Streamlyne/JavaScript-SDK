@@ -19,7 +19,9 @@
     "test",
     "tests",
     "dist/docs",
-    "tutorials"
+    "tutorials",
+    "docs-conf.json",
+    "Gruntfile.js"
   ],
   "dependencies": {
     "momentjs": "~2.5.0"

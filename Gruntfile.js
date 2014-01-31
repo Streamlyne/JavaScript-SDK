@@ -34,12 +34,17 @@ module.exports = function(grunt) {
                 compress: {
                     drop_console: true
                 },
-                report: 'gzip'
+                report: 'min'
             },
             compile: {
                 files: {
                     'dist/streamlyne.min.js': [ 'src/streamlyne.js' ]
                     , 'dist/streamlyne.tests.min.js': [ 'src/streamlyne.tests.js' ]
+                    , 'dist/streamlyne.all.min.js': [
+                        'bower_components/momentjs/min/moment-with-langs.min.js'
+                        , 'bower_components/taffydb/taffy-min.js'
+                        , 'src/streamlyne.js'
+                        ]
                 }
             }
         },

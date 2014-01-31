@@ -34,7 +34,7 @@ asyncTest( "Read All", function() {
   }); 
 });
 test( "Create", function() {
-    console.log('Create test');
+    //console.log('Create test');
     stop();
     expect( 1 );
     Streamlyne.asset.create(authConn, {
@@ -44,7 +44,7 @@ test( "Create", function() {
           "number_serial": ""+(new Date().getTime() * 3)
         }
     }, function(error, result) {
-        console.log("Created User",error, result);
+        //console.log("Created User",error, result);
         if (!error)
         {
             node.id = result.id;
@@ -77,7 +77,7 @@ asyncTest( "Delete with Id", function() {
   expect( 1 );
   //console.log('Delete With Id');
   Streamlyne.asset.deleteWithId(authConn, node.id, function(error, result) {
-    console.log("Delete Work Order with Id", node.id, error, result);
+    //console.log("Delete Work Order with Id", node.id, error, result);
     if (!error)
     {
       ok( true, "Passed and ready to resume!" );
@@ -513,7 +513,7 @@ asyncTest( "Login - Requires User Read All to pass", function() {
   var testConn = 
   Streamlyne.connect({"host":"http://127.0.0.1:5000/"})
   .authenticate(newUserEmail, newUserPassword, function(error, testConn){
-    console.log('authenticated connection', testConn);
+    //console.log('authenticated connection', testConn);
     Streamlyne.user.readAll(testConn, function(error, result) {
       //console.log(error, result);
       if (!error) 
@@ -616,8 +616,8 @@ module("Steamlyne - Relationships", {
 asyncTest( "Add Relationship", function() {
   expect( 6 );
 
-  console.log('Test - Add Relationship');
-  console.log('Creating Log');
+  //console.log('Test - Add Relationship');
+  //console.log('Creating Log');
 
   Streamlyne.log.create(authConn, {
     "data": {
@@ -657,7 +657,7 @@ asyncTest( "Add Relationship", function() {
 
                         Streamlyne.log.readWithId(authConn, node.id, function(error, result) {
 
-                            console.log('Read after add relationship', error, result);
+                            //console.log('Read after add relationship', error, result);
 
                             if (!error && result.id === node.id)
                             {

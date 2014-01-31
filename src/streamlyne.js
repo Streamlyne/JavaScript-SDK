@@ -9,7 +9,7 @@
  var sl = Streamlyne.connect({"host":"http://localhost:5000/", "email":"testing@streamlyne.co", "token":"sl-dev"});
  
  @author Glavin Wiechert
- @version 0.0.1
+ @version 0.2.0
  @constructor
  */
 (function (Streamlyne, global, TAFFY, moment, undefined)
@@ -31,7 +31,7 @@
      
      @access public
      */
-    self.version = '0.0.1';
+    self.version = '0.2.0';
 
     /** 
      Public methods
