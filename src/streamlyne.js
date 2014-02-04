@@ -86,6 +86,7 @@
         var host = null;
         var email = null;
         var token = null;
+        var userId = null;
 
         // Add methods
         /**
@@ -111,8 +112,12 @@
             {
                 token = options.token;
             }
-
-/*
+            // Authenticated User's ID
+            if (options.userId) 
+            {
+                userId = options.userId;
+            }
+            /*
             // Test
             this.apiRequest("GET", "user", {"filters": {"fields":true,"rels":true}}, function(error, result) {
                 console.log(error, result);
@@ -120,6 +125,16 @@
             */
             return this;
         };
+
+        /**
+        Get the Authenticated User's ID.
+        @return NodeId
+        @memberOf StreamlyneConnection
+        **/
+        self.getUserId = function() {
+            return userId;
+        };
+
         /**
          @name apiRequest
          @function apiRequest
@@ -261,12 +276,18 @@
             }, function (error, data)
             {
                 console.log('authenticate', error, data);
-                if (!error)
+                if (error)
                 {
+                    // An error occured
+                } 
+                else
+                {
+                    // Successful!
                     self.loadOptions(
                     {
                         'email': data.email,
-                        'token': data.token
+                        'token': data.token,
+                        'userId': data.id
                     });
                 }
                 return callback && callback(error, self);
@@ -276,12 +297,6 @@
 
         // Load options from arguments
         self.loadOptions(options);
-
-        self.display = function ()
-        {
-            console.log(host, email, token);
-            return self;
-        };
 
         return self;
     };
@@ -488,8 +503,7 @@
          */
         self.run = function (callback)
         {
-            this.connection.display();
-            console.log(this.connection);
+            //console.log(this.connection);
             // Check for required data
             if (this.connection === undefined)
             {

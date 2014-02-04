@@ -516,7 +516,7 @@ asyncTest( "Login - Requires User Read All to pass", function() {
     //console.log('authenticated connection', testConn);
     Streamlyne.user.readAll(testConn, function(error, result) {
       //console.log(error, result);
-      if (!error) 
+      if (!error && testConn.getUserId())
       {
         ok( true, "Passed and ready to resume!" );
       }
