@@ -513,12 +513,12 @@ asyncTest( "Login - Requires User Read All to pass", function() {
   var testConn = 
   Streamlyne.connect({"host":"http://127.0.0.1:5000/"})
   .authenticate(newUserEmail, newUserPassword, function(error, testConn){
-    //console.log('authenticated connection', testConn);
+    console.log('authenticated connection', testConn, testConn.getUserId());
     Streamlyne.user.readAll(testConn, function(error, result) {
-      //console.log(error, result);
+      console.log(error, result);
       if (!error && testConn.getUserId())
       {
-        ok( true, "Passed and ready to resume!" );
+        ok( true, "Passed and ready to resume! Authenticated user: "+testConn.getUserId() );
       }
       else
       {
@@ -527,6 +527,22 @@ asyncTest( "Login - Requires User Read All to pass", function() {
       start();
     }); 
   });
+});
+asyncTest( "Delete with Id", function() {
+  expect( 1 );
+  //console.log('Delete With Id');
+  Streamlyne.user.deleteWithId(authConn, node.id, function(error, result) {
+    //console.log("Delete Work Order with Id", node.id, error, result);
+    if (!error)
+    {
+      ok( true, "Passed and ready to resume! Deleted Node Id: "+node.id );
+    }
+    else
+    {
+      ok( false, error.message);
+    }
+    start();
+  }); 
 });
 
 
@@ -608,7 +624,7 @@ asyncTest( "Delete with Id", function() {
 
 
 /**
-Work Orders
+Relationships
 --------------------------------------------------------------------------
 */
 module("Steamlyne - Relationships", {
