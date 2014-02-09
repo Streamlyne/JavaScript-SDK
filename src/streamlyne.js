@@ -31,7 +31,7 @@
      
      @access public
      */
-    self.version = '0.2.0';
+    self.version = '0.3.0';
 
     /** 
      Public methods
@@ -359,6 +359,24 @@
          
          @memberOf StreamlyneRequest
          */
+        self.create = function (path)
+        {
+            this.data.method = 'POST';
+            this.data.path = path;
+        /*
+          this.data.query = {
+              "filter": {
+                  "fields": true,
+                  "rels": true
+              }
+          };
+          */
+            return this;
+        };
+        /**
+         
+         @memberOf StreamlyneRequest
+         */
         self.read = function (path)
         {
             this.data.method = 'GET';
@@ -377,7 +395,7 @@
          
          @memberOf StreamlyneRequest
          */
-        self.create = function (path)
+        self.update = function (path)
         {
             this.data.method = 'POST';
             this.data.path = path;
@@ -699,6 +717,31 @@
             });
             return this;
         };
+
+
+        /**
+         Update node by `nodeId` with `data` and `relationshps`.
+         @memberOf StreamlyneNode
+         @return StreamlyneNode Self-Referential.
+         */
+        self.update = function (conn, nodeId, options, callback)
+        {
+            options = options || {
+            };
+
+            new StreamlyneRequest(conn).update(this.type()+"/"+nodeId).query(
+            {
+                'data': options.data || {
+                },
+                'rels': options.relationships || {}
+            }).run(function (error, result)
+            {
+                //console.log('Request Complete: ', error, result);
+                return callback && callback(error, result);
+            });
+            return this;
+        };
+
 
         /**
          Delete node with ID.

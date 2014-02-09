@@ -73,6 +73,28 @@ asyncTest( "Read with Id", function() {
     start();
   }); 
 });
+asyncTest( "Update with Id", function() {
+  expect( 1 );
+  Streamlyne.asset.update(authConn, node.id, {
+        "data": {
+          "description": "This is an Asset.",
+          "number_asset": "A"+new Date().getTime(),
+          "number_serial": ""+(new Date().getTime() * 3)
+        }
+  }, function(error, result) {
+    //console.log("Created User",error, result);
+    if (!error)
+    {
+      ok( true, "Passed and ready to resume! Node Id: "+node.id );
+    }
+    else
+    {
+      ok( false, error.message);
+    }
+    start();
+  }); 
+});
+
 asyncTest( "Delete with Id", function() {
   expect( 1 );
   //console.log('Delete With Id');
@@ -337,10 +359,10 @@ asyncTest( "Create", function() {
   expect( 1 );
   Streamlyne.organization.create(authConn, {
     "data": {
-      "name": "Unit Test Organization"
+      "name": "Unit Test Organization "+new Date().getTime()
     }
   }, function(error, result) {
-    //console.log("Created User",error, result);
+    console.log("Created Organization",error, result);
     if (!error)
     {
         node.id = result.id;
