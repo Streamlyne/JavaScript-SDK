@@ -31,7 +31,7 @@
      
      @access public
      */
-    self.version = '0.3.0';
+    self.version = '0.4.0';
 
     /** 
      Public methods
@@ -724,16 +724,18 @@
          @memberOf StreamlyneNode
          @return StreamlyneNode Self-Referential.
          */
-        self.update = function (conn, nodeId, options, callback)
+        self.updateWithId = function (conn, nodeId, options, callback)
         {
             options = options || {
             };
+            
+            console.log(nodeId, options);
 
             new StreamlyneRequest(conn).update(this.type()+"/"+nodeId).query(
             {
                 'data': options.data || {
                 },
-                'rels': options.relationships || {}
+                'rels': options.relationships || []
             }).run(function (error, result)
             {
                 //console.log('Request Complete: ', error, result);
@@ -741,6 +743,12 @@
             });
             return this;
         };
+        /**
+         Update node by `nodeId` with `data` and `relationshps`.
+         @memberOf StreamlyneNode
+         @return StreamlyneNode Self-Referential.
+         */
+        self.updateById = self.updateById;
 
 
         /**
@@ -799,17 +807,15 @@
             .create(this.type() + '/' + startId)
             .query({
                 'data': { }, // No change to data
-                'rels': {
-                    'add': [
-                        // Add single Relationship
-                        {
-                            'dir': 'in',
-                            'id': endId,
-                            'nodeType': '', // This can be empty, and server will fill it in
-                            'relsType': relsType
-                        }
-                    ]
-                }
+                'rels': [
+                    // Add single Relationship
+                    {
+                        'dir': 'in',
+                        'id': endId,
+                        'nodeType': '', // This can be empty, and server will fill it in
+                        'relsType': relsType
+                    }
+                ]
             })
             .run(function (error, result)
             {
@@ -870,7 +876,7 @@
          */
         self.type = function ()
         {
-            return 'user';
+            return 'User';
         };
         /**
          @memberOf StreamlyneUser
@@ -903,7 +909,7 @@
          */
         self.type = function ()
         {
-            return 'workOrder';
+            return 'WorkOrder';
         };
         /**
          @memberOf StreamlyneWorkOrder
@@ -934,7 +940,7 @@
          */
         self.type = function ()
         {
-            return 'asset';
+            return 'Asset';
         };
         /**
          @memberOf StreamlyneAsset
@@ -967,7 +973,7 @@
          */
         self.type = function ()
         {
-            return 'group';
+            return 'Group';
         };
         /**
          @memberOf StreamlyneGroup
@@ -975,7 +981,7 @@
          */
         self.customUserClassOnlyFun = function ()
         {
-            console.log('testUserFunction');
+            console.log('estUserFunction');
             return this;
         };
 
@@ -1001,7 +1007,7 @@
          */
         self.type = function ()
         {
-            return 'log';
+            return 'Log';
         };
         /**
          @memberOf StreamlyneLog
@@ -1034,7 +1040,7 @@
          */
         self.type = function ()
         {
-            return 'attribute';
+            return 'Attribute';
         };
         /**
          @memberOf StreamlyneAttribute
@@ -1069,7 +1075,7 @@
          */
         self.type = function ()
         {
-            return 'organization';
+            return 'Organization';
         };
         /**
          @memberOf StreamlyneOrganization
@@ -1102,7 +1108,7 @@
          */
         self.type = function ()
         {
-            return 'site';
+            return 'Site';
         };
         /**
          @memberOf StreamlyneSite

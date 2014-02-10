@@ -33,9 +33,8 @@ asyncTest( "Read All", function() {
     start();
   }); 
 });
-test( "Create", function() {
+asyncTest( "Create", function() {
     //console.log('Create test');
-    stop();
     expect( 1 );
     Streamlyne.asset.create(authConn, {
         "data": {
@@ -75,14 +74,15 @@ asyncTest( "Read with Id", function() {
 });
 asyncTest( "Update with Id", function() {
   expect( 1 );
-  Streamlyne.asset.update(authConn, node.id, {
+  console.log(node.id);
+  Streamlyne.asset.updateWithId(authConn, node.id, {
         "data": {
           "description": "This is an Asset.",
           "number_asset": "A"+new Date().getTime(),
           "number_serial": ""+(new Date().getTime() * 3)
         }
   }, function(error, result) {
-    //console.log("Created User",error, result);
+    console.log("Created Asset",error, result);
     if (!error)
     {
       ok( true, "Passed and ready to resume! Node Id: "+node.id );
@@ -102,7 +102,7 @@ asyncTest( "Delete with Id", function() {
     //console.log("Delete Work Order with Id", node.id, error, result);
     if (!error)
     {
-      ok( true, "Passed and ready to resume!" );
+      ok( true, "Passed and ready to resume! Node Id: "+node.id );
     }
     else
     {
