@@ -52,6 +52,7 @@ module.exports = function(grunt) {
         // Documentation
         jsdoc: {
             dist: {
+                jsdoc: "./node_modules/.bin/jsdoc",
                 src: [
                     "src/streamlyne.js"
                     , "README.md"

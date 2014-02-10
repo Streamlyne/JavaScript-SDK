@@ -25,7 +25,7 @@
     
     <section>
         <article>
-            <pre class="prettyprint source"><code>/**
+            <pre class="prettyprint source linenums"><code>/**
  @class Streamlyne JavaScript SDK
  @name Streamlyne
  
@@ -178,7 +178,7 @@
             if (!host)
             {
                 var error = new Error('Streamlyne Server Host URL not yet specified.');
-                callback && callback(error, null);
+                callback &amp;&amp; callback(error, null);
                 return this;
             }
             // Check path
@@ -201,7 +201,7 @@
                 };
             }
             // Check if already authenticated
-            if (email && token)
+            if (email &amp;&amp; token)
             {
                 headers['x-sl-email'] = email;
                 headers['x-sl-token'] = token;
@@ -228,7 +228,7 @@
             var isSuccessful = function (readyState, statusCode)
             {
                 // readyState = 4 (Completed request) and statusCode = 2xx (Variations of Successful)
-                return (readyState === 4 && (parseInt(statusCode / 100) === 2));
+                return (readyState === 4 &amp;&amp; (parseInt(statusCode / 100) === 2));
             };
             // 
             http.onreadystatechange = function ()
@@ -264,10 +264,10 @@
                 // Check if request is successful
                 if (isSuccessful(http.readyState, http.status))
                 {
-                    // Completed & Successful: should not have an error.
+                    // Completed &amp; Successful: should not have an error.
                     error = null;
                     // Return
-                    return callback && callback(error, jsonResponse);
+                    return callback &amp;&amp; callback(error, jsonResponse);
                 }
                 else
                 {
@@ -279,7 +279,7 @@
                         console.log("Error::: ", responseTxt);
                         error = new Error(responseTxt);
                         // Return
-                        return callback && callback(error, jsonResponse);
+                        return callback &amp;&amp; callback(error, jsonResponse);
                     }
                 }
             };
@@ -339,7 +339,7 @@
                         'userId': data.id
                     });
                 }
-                return callback && callback(error, self);
+                return callback &amp;&amp; callback(error, self);
             });
             return self;
         };
@@ -579,7 +579,7 @@
                 };
             }
             else
-            if (this.data && this.data.method && this.data.path && this.data.query)
+            if (this.data &amp;&amp; this.data.method &amp;&amp; this.data.path &amp;&amp; this.data.query)
             {
                 //
                 this.done(callback);
@@ -660,7 +660,7 @@
                 function(error, result) {
                     console.log(error, result);
             });
-            callback && callback(null,[]);
+            callback &amp;&amp; callback(null,[]);
             */
             new StreamlyneRequest(conn)
             .read(this.type() + '/')
@@ -682,11 +682,11 @@
                     }
                     */
                     // Return nodes
-                    return callback && callback(error, result);
+                    return callback &amp;&amp; callback(error, result);
                 }
                 catch (e)
                 {
-                    return callback && callback(e, []);
+                    return callback &amp;&amp; callback(e, []);
                 }
             });
             return this;
@@ -704,7 +704,7 @@
             if (!nodeId)
             {
                 var error = new Error('NodeId argument not defined in readWithId request.');
-                callback && callback(error, {});
+                callback &amp;&amp; callback(error, {});
                 return this;
             }
             /*
@@ -716,7 +716,7 @@
                 function(error, result) {
                     console.log(error, result);
             });
-            callback && callback(null,[]);
+            callback &amp;&amp; callback(null,[]);
             */
             new StreamlyneRequest(conn)
             .read(this.type() + '/' + nodeId)
@@ -733,7 +733,7 @@
                 console.log(node);
                 */
                 // Return nodes
-                return callback && callback(error, result);
+                return callback &amp;&amp; callback(error, result);
             });
             return this;
         };
@@ -762,7 +762,7 @@
             }).run(function (error, result)
             {
                 //console.log('Request Complete: ', error, result);
-                return callback && callback(error, result);
+                return callback &amp;&amp; callback(error, result);
             });
             return this;
         };
@@ -788,7 +788,7 @@
             }).run(function (error, result)
             {
                 //console.log('Request Complete: ', error, result);
-                return callback && callback(error, result);
+                return callback &amp;&amp; callback(error, result);
             });
             return this;
         };
@@ -812,7 +812,7 @@
             if (!nodeId)
             {
                 var error = new Error('NodeId argument not defined in readWithId request.');
-                callback && callback(error, {});
+                callback &amp;&amp; callback(error, {});
                 return this;
             }
 
@@ -823,7 +823,7 @@
             .run(function (error, result)
             {
                 //console.log("Request Complete: ", error, result);
-                return callback && callback(error, result);
+                return callback &amp;&amp; callback(error, result);
             });
             return this;
         };
@@ -848,7 +848,7 @@
             if (!startId || !endId)
             {
                 var error = new Error('StartId or EndId argument is not defined in addRelationshipBetweenIds request.');
-                callback && callback(error, {});
+                callback &amp;&amp; callback(error, {});
                 return this;
             }
 
@@ -869,7 +869,7 @@
             .run(function (error, result)
             {
                 //console.log("Request Complete: ", error, result);
-                return callback && callback(error, result);
+                return callback &amp;&amp; callback(error, result);
             });
             return this;
         };
@@ -1198,7 +1198,7 @@
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Mon Feb 10 2014 17:18:02 GMT-0400 (GMT-04:00)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Mon Feb 10 2014 18:00:53 GMT-0400 (AST)
 </footer>
 
 <script> prettyPrint(); </script>
