@@ -530,6 +530,28 @@ asyncTest( "Create", function() {
     start();
   }); 
 });
+
+asyncTest( "Incorrect Login - Requires User Read All to pass", function() {
+  expect( 1 );
+  var testConn = 
+  Streamlyne.connect({"host":"http://127.0.0.1:5000/"})
+  .authenticate(newUserEmail, newUserPassword+"incorrect", function(error, testConn){
+    console.log('authenticated connection', testConn, testConn.getUserId());
+    Streamlyne.user.readAll(testConn, function(error, result) {
+      console.log(error, result);
+      if (!error && !!error.message)
+      {
+        ok( true, "Passed and ready to resume! Error message: "+error.message );
+      }
+      else
+      {
+        ok( false, "Server Error: Missing appropriate error message response.");
+      }
+      start();
+    }); 
+  });
+});
+
 asyncTest( "Login - Requires User Read All to pass", function() {
   expect( 1 );
   var testConn = 
