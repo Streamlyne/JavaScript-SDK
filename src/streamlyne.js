@@ -136,6 +136,24 @@
         };
 
         /**
+        Get the Authenticated Email
+        @return NodeId
+        @memberOf StreamlyneConnection
+        **/
+        self.getEmail = function() {
+            return email;
+        };
+
+        /**
+        Get the Authenticated Token.
+        @return NodeId
+        @memberOf StreamlyneConnection
+        **/
+        self.getToken = function() {
+            return token;
+        };
+
+        /**
          @name apiRequest
          @function apiRequest
          @param method   {String} The method.
