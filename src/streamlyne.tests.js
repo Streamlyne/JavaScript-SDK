@@ -682,15 +682,15 @@ asyncTest( "Delete with Id", function() {
 
 
 /**
-Loto
+IsolationCollection
 --------------------------------------------------------------------------
 */
-module("Steamlyne - Loto", {
+module("Steamlyne - IsolationCollection", {
 });
 asyncTest( "Read All", function() {
   expect( 1 );
 
-  Streamlyne.loto.readAll(authConn, function(error, result) {
+  Streamlyne.isolationCollection.readAll(authConn, function(error, result) {
     //console.log(error, result);
     if (!error) 
     {
@@ -706,7 +706,7 @@ asyncTest( "Read All", function() {
 });
 asyncTest( "Create", function() {
   expect( 1 );
-  Streamlyne.loto.create(authConn, {
+  Streamlyne.isolationCollection.create(authConn, {
     "data": {
       "description": "This is a test Work Order at "+new Date()+"."
     }
@@ -727,7 +727,7 @@ asyncTest( "Create", function() {
 asyncTest( "Read with Id", function() {
   expect( 1 );
   //console.log('Start Read With Id');
-  Streamlyne.loto.readWithId(authConn, node.id, function(error, result) {
+  Streamlyne.isolationCollection.readWithId(authConn, node.id, function(error, result) {
     //console.log("Read Work Order with Id", node.id, error, result);
     if (!error && result.id === node.id)
     {
@@ -743,7 +743,7 @@ asyncTest( "Read with Id", function() {
 asyncTest( "Delete with Id", function() {
   expect( 1 );
   //console.log('Delete With Id');
-  Streamlyne.loto.deleteWithId(authConn, node.id, function(error, result) {
+  Streamlyne.isolationCollection.deleteWithId(authConn, node.id, function(error, result) {
     //console.log("Delete Work Order with Id", node.id, error, result);
     if (!error)
     {
@@ -786,8 +786,14 @@ asyncTest( "Create", function() {
   expect( 1 );
   Streamlyne.isolationPoint.create(authConn, {
     "data": {
-      "tag": new Date().getTime(),
-      "name": "This is a test Isolation Point at "+new Date()+"."
+      "name": "This is a test Isolation Point at "+new Date()+".",
+      "tag_blind": new Date().getTime(),
+      "tag_loto": new Date().getTime(),
+      "position_normal": "closed",
+      "position_normal": "open",
+      "flange_size": 14,
+      "flange_pressure": 10,
+      "scaffolding_required": 1
     }
   }, function(error, result) {
     //console.log("Created Work Order",error, result);
@@ -839,15 +845,15 @@ asyncTest( "Delete with Id", function() {
 
 
 /**
-Loto Job
+Isolation Job
 --------------------------------------------------------------------------
 */
-module("Steamlyne - Loto Job", {
+module("Steamlyne - Isolation Job", {
 });
 asyncTest( "Read All", function() {
   expect( 1 );
 
-  Streamlyne.lotoJob.readAll(authConn, function(error, result) {
+  Streamlyne.isolationJob.readAll(authConn, function(error, result) {
     //console.log(error, result);
     if (!error) 
     {
@@ -863,7 +869,7 @@ asyncTest( "Read All", function() {
 });
 asyncTest( "Create", function() {
   expect( 1 );
-  Streamlyne.lotoJob.create(authConn, {
+  Streamlyne.isolationJob.create(authConn, {
     "data": {
       "description": "This is a test Work Order at "+new Date()+"."
     }
@@ -884,7 +890,7 @@ asyncTest( "Create", function() {
 asyncTest( "Read with Id", function() {
   expect( 1 );
   //console.log('Start Read With Id');
-  Streamlyne.lotoJob.readWithId(authConn, node.id, function(error, result) {
+  Streamlyne.isolationJob.readWithId(authConn, node.id, function(error, result) {
     //console.log("Read Work Order with Id", node.id, error, result);
     if (!error && result.id === node.id)
     {
@@ -900,7 +906,7 @@ asyncTest( "Read with Id", function() {
 asyncTest( "Delete with Id", function() {
   expect( 1 );
   //console.log('Delete With Id');
-  Streamlyne.lotoJob.deleteWithId(authConn, node.id, function(error, result) {
+  Streamlyne.isolationJob.deleteWithId(authConn, node.id, function(error, result) {
     //console.log("Delete Work Order with Id", node.id, error, result);
     if (!error)
     {
@@ -913,85 +919,6 @@ asyncTest( "Delete with Id", function() {
     start();
   }); 
 });
-
-
-
-/**
-Blind
---------------------------------------------------------------------------
-*/
-module("Steamlyne - Blind", {
-});
-asyncTest( "Read All", function() {
-  expect( 1 );
-
-  Streamlyne.blind.readAll(authConn, function(error, result) {
-    //console.log(error, result);
-    if (!error) 
-    {
-      ok( true, "Passed and ready to resume!" );
-    }
-    else
-    {
-      ok( false, error.message);
-    }
-    start();
-  }); 
-
-});
-asyncTest( "Create", function() {
-  expect( 1 );
-  Streamlyne.blind.create(authConn, {
-    "data": {
-      "description": "This is a test Work Order at "+new Date()+"."
-    }
-  }, function(error, result) {
-    //console.log("Created Work Order",error, result);
-    if (!error)
-    {
-        node.id = result.id;
-        ok( true, "Passed and ready to resume!" );
-    }
-    else
-    {
-      ok( false, error.message);
-    }
-    start();
-  }); 
-});
-asyncTest( "Read with Id", function() {
-  expect( 1 );
-  //console.log('Start Read With Id');
-  Streamlyne.blind.readWithId(authConn, node.id, function(error, result) {
-    //console.log("Read Work Order with Id", node.id, error, result);
-    if (!error && result.id === node.id)
-    {
-      ok( true, "Passed and ready to resume!" );
-    }
-    else
-    {
-      ok( false, error.message);
-    }
-    start();
-  }); 
-});
-asyncTest( "Delete with Id", function() {
-  expect( 1 );
-  //console.log('Delete With Id');
-  Streamlyne.blind.deleteWithId(authConn, node.id, function(error, result) {
-    //console.log("Delete Work Order with Id", node.id, error, result);
-    if (!error)
-    {
-      ok( true, "Passed and ready to resume!" );
-    }
-    else
-    {
-      ok( false, error.message);
-    }
-    start();
-  }); 
-});
-
 
 /**
 Relationships

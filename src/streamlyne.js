@@ -1167,24 +1167,24 @@
     Streamlyne.site = new StreamlyneSite();
 
     /**
-     @class StreamlyneLoto
-     @name StreamlyneLoto    
+     @class StreamlyneIsolationCollection
+     @name StreamlyneIsolationCollection    
      @inherits StreamlyneNode
      */
-    var StreamlyneLoto = function ()
+    var StreamlyneIsolationCollection = function ()
     {
         var self = this;
 
         self = new StreamlyneNode();
         /**
-         @memberOf StreamlyneSite
+         @memberOf StreamlyneIsolationCollection
          */
         self.type = function ()
         {
-            return 'Loto';
+            return 'IsolationCollection';
         };
         /**
-         @memberOf StreamlyneSite
+         @memberOf StreamlyneIsolationCollection
          @return StreamlyneSite Self-Referential.
          */
         self.customUserClassOnlyFun = function ()
@@ -1196,28 +1196,28 @@
         return self;
     };
     // Reveal Streamlyne to the global object.
-    global.StreamlyneLoto = StreamlyneLoto;
-    Streamlyne.loto = new StreamlyneLoto();
+    global.StreamlyneIsolationCollection = StreamlyneIsolationCollection;
+    Streamlyne.isolationCollection = new StreamlyneIsolationCollection();
 
     /**
-     @class StreamlyneLotoJob
-     @name StreamlyneLotoJob    
+     @class StreamlyneIsolationJob
+     @name StreamlyneIsolationJob    
      @inherits StreamlyneNode
      */
-    var StreamlyneLotoJob = function ()
+    var StreamlyneIsolationJob = function ()
     {
         var self = this;
 
         self = new StreamlyneNode();
         /**
-         @memberOf StreamlyneLotoJob
+         @memberOf StreamlyneIsolationJob
          */
         self.type = function ()
         {
-            return 'LotoJob';
+            return 'IsolationJob';
         };
         /**
-         @memberOf StreamlyneLotoJob
+         @memberOf StreamlyneIsolationJob
          @return StreamlyneSite Self-Referential.
          */
         self.customUserClassOnlyFun = function ()
@@ -1229,8 +1229,8 @@
         return self;
     };
     // Reveal Streamlyne to the global object.
-    global.StreamlyneLotoJob = StreamlyneLotoJob;
-    Streamlyne.lotoJob = new StreamlyneLotoJob();
+    global.StreamlyneIsolationJob = StreamlyneIsolationJob;
+    Streamlyne.isolationJob = new StreamlyneIsolationJob();
 
     /**
      @class StreamlyneIsolationPoint
@@ -1264,41 +1264,6 @@
     // Reveal Streamlyne to the global object.
     global.StreamlyneIsolationPoint = StreamlyneIsolationPoint;
     Streamlyne.isolationPoint = new StreamlyneIsolationPoint();
-
-    /**
-     @class StreamlyneBlind
-     @name StreamlyneBlind    
-     @inherits StreamlyneNode
-     */
-    var StreamlyneBlind = function ()
-    {
-        var self = this;
-
-        self = new StreamlyneNode();
-        /**
-         @memberOf StreamlyneBlind
-         */
-        self.type = function ()
-        {
-            return 'Blind';
-        };
-        /**
-         @memberOf StreamlyneSite
-         @return StreamlyneSite Self-Referential.
-         */
-        self.customUserClassOnlyFun = function ()
-        {
-            console.log('testUserFunction');
-            return this;
-        };
-
-        return self;
-    };
-    // Reveal Streamlyne to the global object.
-    global.StreamlyneBlind = StreamlyneBlind;
-    Streamlyne.blind = new StreamlyneBlind();
-
-
 
     // Reveal Streamlyne to the global object.
     // Window is the global object in most situations:

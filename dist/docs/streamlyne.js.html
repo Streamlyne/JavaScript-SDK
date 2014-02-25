@@ -1194,24 +1194,24 @@
     Streamlyne.site = new StreamlyneSite();
 
     /**
-     @class StreamlyneLoto
-     @name StreamlyneLoto    
+     @class StreamlyneIsolationCollection
+     @name StreamlyneIsolationCollection    
      @inherits StreamlyneNode
      */
-    var StreamlyneLoto = function ()
+    var StreamlyneIsolationCollection = function ()
     {
         var self = this;
 
         self = new StreamlyneNode();
         /**
-         @memberOf StreamlyneSite
+         @memberOf StreamlyneIsolationCollection
          */
         self.type = function ()
         {
-            return 'Loto';
+            return 'IsolationCollection';
         };
         /**
-         @memberOf StreamlyneSite
+         @memberOf StreamlyneIsolationCollection
          @return StreamlyneSite Self-Referential.
          */
         self.customUserClassOnlyFun = function ()
@@ -1223,28 +1223,28 @@
         return self;
     };
     // Reveal Streamlyne to the global object.
-    global.StreamlyneLoto = StreamlyneLoto;
-    Streamlyne.loto = new StreamlyneLoto();
+    global.StreamlyneIsolationCollection = StreamlyneIsolationCollection;
+    Streamlyne.isolationCollection = new StreamlyneIsolationCollection();
 
     /**
-     @class StreamlyneLotoJob
-     @name StreamlyneLotoJob    
+     @class StreamlyneIsolationJob
+     @name StreamlyneIsolationJob    
      @inherits StreamlyneNode
      */
-    var StreamlyneLotoJob = function ()
+    var StreamlyneIsolationJob = function ()
     {
         var self = this;
 
         self = new StreamlyneNode();
         /**
-         @memberOf StreamlyneLotoJob
+         @memberOf StreamlyneIsolationJob
          */
         self.type = function ()
         {
-            return 'LotoJob';
+            return 'IsolationJob';
         };
         /**
-         @memberOf StreamlyneLotoJob
+         @memberOf StreamlyneIsolationJob
          @return StreamlyneSite Self-Referential.
          */
         self.customUserClassOnlyFun = function ()
@@ -1256,8 +1256,8 @@
         return self;
     };
     // Reveal Streamlyne to the global object.
-    global.StreamlyneLotoJob = StreamlyneLotoJob;
-    Streamlyne.lotoJob = new StreamlyneLotoJob();
+    global.StreamlyneIsolationJob = StreamlyneIsolationJob;
+    Streamlyne.isolationJob = new StreamlyneIsolationJob();
 
     /**
      @class StreamlyneIsolationPoint
@@ -1292,41 +1292,6 @@
     global.StreamlyneIsolationPoint = StreamlyneIsolationPoint;
     Streamlyne.isolationPoint = new StreamlyneIsolationPoint();
 
-    /**
-     @class StreamlyneBlind
-     @name StreamlyneBlind    
-     @inherits StreamlyneNode
-     */
-    var StreamlyneBlind = function ()
-    {
-        var self = this;
-
-        self = new StreamlyneNode();
-        /**
-         @memberOf StreamlyneBlind
-         */
-        self.type = function ()
-        {
-            return 'Blind';
-        };
-        /**
-         @memberOf StreamlyneSite
-         @return StreamlyneSite Self-Referential.
-         */
-        self.customUserClassOnlyFun = function ()
-        {
-            console.log('testUserFunction');
-            return this;
-        };
-
-        return self;
-    };
-    // Reveal Streamlyne to the global object.
-    global.StreamlyneBlind = StreamlyneBlind;
-    Streamlyne.blind = new StreamlyneBlind();
-
-
-
     // Reveal Streamlyne to the global object.
     // Window is the global object in most situations:
     return self;
@@ -1342,13 +1307,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Streamlyne.html">Streamlyne</a></li><li><a href="StreamlyneAsset.html">StreamlyneAsset</a></li><li><a href="StreamlyneAttribute.html">StreamlyneAttribute</a></li><li><a href="StreamlyneBlind.html">StreamlyneBlind</a></li><li><a href="StreamlyneConnection.html">StreamlyneConnection</a></li><li><a href="StreamlyneGroup.html">StreamlyneGroup</a></li><li><a href="StreamlyneIsolationPoint.html">StreamlyneIsolationPoint</a></li><li><a href="StreamlyneLog.html">StreamlyneLog</a></li><li><a href="StreamlyneLoto.html">StreamlyneLoto</a></li><li><a href="StreamlyneLotoJob.html">StreamlyneLotoJob</a></li><li><a href="StreamlyneNode.html">StreamlyneNode</a></li><li><a href="StreamlyneOrganization.html">StreamlyneOrganization</a></li><li><a href="StreamlyneRequest.html">StreamlyneRequest</a></li><li><a href="StreamlyneSite.html">StreamlyneSite</a></li><li><a href="StreamlyneUser.html">StreamlyneUser</a></li><li><a href="StreamlyneWorkOrder.html">StreamlyneWorkOrder</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-Installation.html">Installation</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Streamlyne.html">Streamlyne</a></li><li><a href="StreamlyneAsset.html">StreamlyneAsset</a></li><li><a href="StreamlyneAttribute.html">StreamlyneAttribute</a></li><li><a href="StreamlyneConnection.html">StreamlyneConnection</a></li><li><a href="StreamlyneGroup.html">StreamlyneGroup</a></li><li><a href="StreamlyneIsolationCollection.html">StreamlyneIsolationCollection</a></li><li><a href="StreamlyneIsolationJob.html">StreamlyneIsolationJob</a></li><li><a href="StreamlyneIsolationPoint.html">StreamlyneIsolationPoint</a></li><li><a href="StreamlyneLog.html">StreamlyneLog</a></li><li><a href="StreamlyneNode.html">StreamlyneNode</a></li><li><a href="StreamlyneOrganization.html">StreamlyneOrganization</a></li><li><a href="StreamlyneRequest.html">StreamlyneRequest</a></li><li><a href="StreamlyneSite.html">StreamlyneSite</a></li><li><a href="StreamlyneUser.html">StreamlyneUser</a></li><li><a href="StreamlyneWorkOrder.html">StreamlyneWorkOrder</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-Installation.html">Installation</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Thu Feb 20 2014 15:03:06 GMT-0400 (AST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Tue Feb 25 2014 19:51:20 GMT-0400 (AST)
 </footer>
 
 <script> prettyPrint(); </script>
