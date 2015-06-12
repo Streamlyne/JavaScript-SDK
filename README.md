@@ -1,5 +1,7 @@
 # Streamlyne JavaScript SDK
 
+## DEPRECATED: No longer in active development and does not connect to current Streamlyne API.
+
 Start with the {@tutorial Installation}.
 
 See [test.html](/test.html?noglobals=true&notrycatch=true) for example usage.
